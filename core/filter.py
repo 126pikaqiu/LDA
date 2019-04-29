@@ -19,34 +19,35 @@ class Fiter(object):
         self.org = []
         self.com = []
         self.result = {}
+
         self.result["drug"] = []
         self.result["state"] = []
         self.result["org"] = []
         self.result["com"] = []
         self.result["disease"] = []
 
-    def set_alist(self,alist):
-        self.alist = alist
+    def set_alist(self,sequnce):
+        self.alist = sequnce.split("/")
 
     def filter(self):
         self.load_key_words()
         for item in self.alist:
-            if item in self.drugs:
+            if item in self.drugs and item not in self.result["drug"]:
                 self.result["drug"].append(item)
-                break
+                continue
             if item.replace("市","").replace("县","") in self.states:
                 for key in self.state:
-                    if item.replace("市","").replace("县","") in self.state[key]:
-                        self.result["state"].append(key + item)
+                    if item.replace("市","").replace("县","") in self.state[key] and key + "省（市）" + item not in self.result["state"]:
+                        self.result["state"].append(key + "省（市）" + item)
                         break
-                break
-            if "病" in item:
-                self.result["drug"].append(item)
-                break
-            if "企业" in item or "公司" in item:
+                continue
+            if "病" in item and item not in self.result["disease"]:
+                self.result["disease"].append(item)
+                continue
+            if ("企业" in item or "公司" in item) and item not in self.result["com"]:
                 self.result["com"].append(item)
-                break
-            if "院" in item:
+                continue
+            if "院" in item and item not in self.result["org"]:
                 self.result["org"].append(item)
         return self.result
 
@@ -60,4 +61,5 @@ class Fiter(object):
         with open("../res/userdict.txt","r", encoding='utf-8') as f:
             content = f.readlines()
         self.drugs = [item.split(" ")[0] for item in content]
+
 
