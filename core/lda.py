@@ -19,7 +19,7 @@ if __name__ == "__main__":
     outfilename = "../res/testsentences.txt"
     userdict = "../res/testsentences.txt"
     with open(outfilename, 'r', encoding='UTF-8') as fp:
-        content = fp.read()
+        content = fp.readlines()[1]
     with open("../res/key.json", "r", encoding='utf-8') as f:
         key = json.load(f)
     keys = []
@@ -32,7 +32,7 @@ if __name__ == "__main__":
                 if sentence.find(one) != -1:
                     lines += sentence + "。"
                     break
-
+    print(lines)
     lda = LDA()
     lda.set_sentences([lines])
     topic = lda.analyse()

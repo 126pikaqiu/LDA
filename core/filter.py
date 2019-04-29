@@ -37,8 +37,9 @@ class Fiter(object):
                 continue
             if item.replace("市","").replace("县","") in self.states:
                 for key in self.state:
-                    if item.replace("市","").replace("县","") in self.state[key] and key + "省（市）" + item not in self.result["state"]:
-                        self.result["state"].append(key + "省（市）" + item)
+                    if item.replace("市","").replace("县","") in self.state[key]:
+                        if (key + "省（市）" + item.replace("市","").replace("县","")) not in self.result["state"]:
+                            self.result["state"].append(key + "省（市）" + item.replace("市","").replace("县",""))
                         break
                 continue
             if "病" in item and item not in self.result["disease"]:
